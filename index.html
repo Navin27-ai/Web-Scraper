@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrap X</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-spider"></i>
+                <h1>SCRAP X</h1>
+            </div>
+            <p class="subtitle">Extract text, links, and images from any website</p>
+        </header>
+
+        <main class="main-content">
+            <div class="scraper-form">
+                <div class="input-group">
+                    <label for="url-input">Website URL</label>
+                    <div class="input-container">
+                        <i class="fas fa-globe"></i>
+                        <input type="url" id="url-input" placeholder="Enter website URL (e.g., https://example.com)" required>
+                    </div>
+                </div>
+
+                <div class="options-group">
+                    <h3>Extraction Options</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="extract-text" checked>
+                            <span class="checkmark"></span>
+                            <i class="fas fa-file-text"></i>
+                            Extract Text Content
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="extract-links" checked>
+                            <span class="checkmark"></span>
+                            <i class="fas fa-link"></i>
+                            Extract Links
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="extract-images" checked>
+                            <span class="checkmark"></span>
+                            <i class="fas fa-image"></i>
+                            Extract Images
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="download-images">
+                            <span class="checkmark"></span>
+                            <i class="fas fa-download"></i>
+                            Download Images
+                        </label>
+                    </div>
+                </div>
+
+                <button id="scrape-btn" class="scrape-button">
+                    <i class="fas fa-play"></i>
+                    SCRAP NOW
+                </button>
+            </div>
+
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Scraping website...</p>
+            </div>
+
+            <div id="results" class="results hidden">
+                <div class="results-header">
+                    <h2>Scraping Results</h2>
+                    <button id="download-all" class="download-all-btn">
+                        <i class="fas fa-download"></i>
+                        Download All
+                    </button>
+                </div>
+
+                <div class="results-grid">
+                    <div class="result-card" id="text-results">
+                        <div class="card-header">
+                            <i class="fas fa-file-text"></i>
+                            <h3>Text Content</h3>
+                            <span class="count" id="text-count">0</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="preview" id="text-preview"></div>
+                            <button class="view-full-btn" onclick="viewFullContent('text')">
+                                <i class="fas fa-eye"></i>
+                                View Full Content
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="result-card" id="links-results">
+                        <div class="card-header">
+                            <i class="fas fa-link"></i>
+                            <h3>Links</h3>
+                            <span class="count" id="links-count">0</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="preview" id="links-preview"></div>
+                            <button class="view-full-btn" onclick="viewFullContent('links')">
+                                <i class="fas fa-eye"></i>
+                                View All Links
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="result-card" id="images-results">
+                        <div class="card-header">
+                            <i class="fas fa-image"></i>
+                            <h3>Images</h3>
+                            <span class="count" id="images-count">0</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="preview" id="images-preview"></div>
+                            <button class="view-full-btn" onclick="viewFullContent('images')">
+                                <i class="fas fa-eye"></i>
+                                View All Images
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="result-card ai-analysis-card" id="ai-results">
+                        <div class="card-header">
+                            <i class="fas fa-brain"></i>
+                            <h3>AI ANALYSIS</h3>
+                            <span class="count ai-count" id="ai-count">🔮</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="ai-preview" id="ai-preview">
+                                <div class="ai-placeholder">
+                                    <i class="fas fa-magic"></i>
+                                    <p>Click to unlock AI insights</p>
+                                </div>
+                            </div>
+                            <button class="view-full-btn ai-btn" onclick="runAIAnalysis()">
+                                <i class="fas fa-robot"></i>
+                                ANALYZE WITH AI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="error" class="error hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error</h3>
+                <p id="error-message"></p>
+            </div>
+        </main>
+
+        <!-- Modal for viewing full content -->
+        <div id="modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-title"></h2>
+                    <button class="close-btn" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-content"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="download-btn" id="modal-download">
+                        <i class="fas fa-download"></i>
+                        Download
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
